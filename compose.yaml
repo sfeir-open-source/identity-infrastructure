@@ -1,0 +1,67 @@
+services:
+  app:
+    image: shikanime/identity-foundation-sample:v0.1.0
+    build: .
+  kratos-migrate:
+    image: oryd/kratos:v0.8.2-alpha.1
+    environment:
+      - DSN=postgres://kratos:secret@postgres:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+    volumes:
+      - type: bind
+        source: ./config/kratos
+        target: /etc/ory/kratos
+    command: -c /etc/ory/kratos/kratos.yaml migrate sql -e --yes
+    restart: on-failure
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:v0.8.2-alpha.1
+    environment:
+      - KRATOS_PUBLIC_URL=http://kratos:4433/
+      - PORT=4435
+      - KRATOS_BROWSER_URL=http://127.0.0.1:4455/.ory/kratos/public
+      - JWKS_URL=http://oathkeeper:4456/.well-known/jwks.json
+      - SECURITY_MODE=jwks
+    restart: on-failure
+  kratos:
+    depends_on:
+      - kratos-migrate
+    image: oryd/kratos:v0.8.2-alpha.1
+    ports:
+      - "4433:4433" # public
+      - "4434:4434" # admin
+    restart: unless-stopped
+    environment:
+      - DSN=postgres://kratos:secret@postgres:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+      - LOG_LEVEL=trace
+      - SERVE_PUBLIC_BASE_URL=http://127.0.0.1:4455/.ory/kratos/public/
+    command: serve -c /etc/ory/kratos/kratos.yaml --dev --watch-courier
+    volumes:
+      - type: bind
+        source: ./config/kratos
+        target: /etc/ory/kratos
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    ports:
+      - "4436:4436"
+      - "4437:4437"
+  oathkeeper:
+    image: oryd/oathkeeper:v0.38
+    depends_on:
+      - kratos
+    ports:
+      - 4455:4455
+      - 4456:4456
+    command:
+      serve proxy -c "/etc/ory/oathkeeper/oathkeeper.yaml"
+    environment:
+      - LOG_LEVEL=debug
+    restart: on-failure
+    volumes:
+      - ./config/oathkeeper:/etc/ory/oathkeeper
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=kratos
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=kratos
