@@ -2,13 +2,15 @@ services:
   app:
     image: shikanime/identity-foundation-sample:v0.1.0
     build: .
+    ports:
+      - 3000:3000
   kratos-migrate:
     image: oryd/kratos:v0.8.2-alpha.1
     environment:
       - DSN=postgres://kratos:secret@postgres:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
       - type: bind
-        source: ./config/kratos
+        source: ./deploy/kratos
         target: /etc/ory/kratos
     command: -c /etc/ory/kratos/kratos.yaml migrate sql -e --yes
     restart: on-failure
@@ -36,7 +38,7 @@ services:
     command: serve -c /etc/ory/kratos/kratos.yaml --dev --watch-courier
     volumes:
       - type: bind
-        source: ./config/kratos
+        source: ./deploy/kratos
         target: /etc/ory/kratos
   mailslurper:
     image: oryd/mailslurper:latest-smtps
@@ -56,7 +58,7 @@ services:
       - LOG_LEVEL=debug
     restart: on-failure
     volumes:
-      - ./config/oathkeeper:/etc/ory/oathkeeper
+      - ./deploy/oathkeeper:/etc/ory/oathkeeper
   postgres:
     image: postgres:9.6
     ports:

@@ -1,31 +1,40 @@
-# Use the official lightweight Node.js 12 image.
-# https://hub.docker.com/_/node
-FROM docker.io/library/node:17.4.0-bullseye AS build-env
+FROM docker.io/library/node:17.4.0-bullseye-slim@sha256:127e7abf453152266a11ccbed1510dff5241b671855e32611d19fb348a8f4a41 AS base
 
-# Create and change to the app directory.
+# Define the current directory based on defacto community standard
 WORKDIR /usr/src/app
 
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure copying both package.json AND yarn.lock.
-# Copying this first prevents re-running npm install on every code change.
+FROM base AS runtime
+
+# Pull production only depedencies
 COPY package.json yarn.lock ./
+RUN yarn install --production
 
-# Install production dependencies.
-ENV NODE_ENV production
-RUN yarn install --frozen-lockfile
+FROM runtime AS builder
 
-# Copy local code to the container image.
+# Pull all depedencies
+RUN yarn install
+
+FROM builder AS source
+
+# Copy source
 COPY . .
 
-# Copy files it into distroless image.
-FROM gcr.io/distroless/nodejs-debian11:16
+FROM source AS build
 
-# Run as a non root user.
-USER nonroot
-WORKDIR /usr/src/app
+# Build application
+ENV NODE_ENV=production
+RUN yarn build
 
-COPY --from=build-env --chown=nonroot:nonroot /usr/src/app ./
+FROM runtime
 
-# Run the web service on container startup.
+# Switch to the node default non-root user
+USER node
+
+# Copy build
+COPY --from=build /usr/src/app/next.config.js ./next.config.js
+COPY --from=build /usr/src/app/.next ./.next
+COPY --from=build /usr/src/app/public ./public
+
+# Set entrypoint
 EXPOSE 3000
-CMD [ "dist/server.js" ]
+CMD [ "yarn", "start" ]

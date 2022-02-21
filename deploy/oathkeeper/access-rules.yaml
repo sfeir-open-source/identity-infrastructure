@@ -22,8 +22,9 @@
   upstream:
     preserve_host: true
     url: "http://kratos-selfservice-ui-node:4435"
+    strip_path: /account
   match:
-    url: "http://127.0.0.1:4455/<{welcome,registration,login,verification,error,recovery,verify,auth/*,**.css,**.js,**.png}{/,}>"
+    url: "http://127.0.0.1:4455/account/<{welcome,registration,login,verification,error,recovery,verify,auth/*,**.css,**.js,**.png}{/,}>"
     methods:
       - GET
   authenticators:
@@ -37,8 +38,9 @@
   upstream:
     preserve_host: true
     url: "http://kratos-selfservice-ui-node:4435"
+    strip_path: /account
   match:
-    url: "http://127.0.0.1:4455/<{,debug,dashboard,settings}>"
+    url: "http://127.0.0.1:4455/account/<{,debug,dashboard,settings}>"
     methods:
       - GET
   authenticators:
@@ -50,4 +52,23 @@
   errors:
     - handler: redirect
       config:
-        to: http://127.0.0.1:4455/login
+        to: http://127.0.0.1:4455/account/login
+
+- id: "ory:app:protected"
+  upstream:
+    preserve_host: true
+    url: "http://app:3000"
+  match:
+    url: "http://127.0.0.1:4455/app/<{,home,api/*,favicon.ico,_next/static/**.css,_next/static/**.js,**.svg}>"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/account/login
