@@ -32,7 +32,7 @@ errors:
     redirect:
       enabled: true
       config:
-        to: http://127.0.0.1:4455/account/login
+        to: http://127.0.0.1:4455/account/
         when:
           - error:
               - unauthorized
@@ -60,12 +60,12 @@ authenticators:
   cookie_session:
     enabled: true
     config:
-      check_session_url: http://kratos:4433/sessions/whoami
+      check_session_url: http://account/sessions/whoami.php
       preserve_path: true
       extra_from: "@this"
       subject_from: "identity.id"
       only:
-        - ory_kratos_session
+        - PHPSESSID
 
   noop:
     enabled: true
