@@ -1,0 +1,19 @@
+{
+  "name": "devas/identity-foundation-account",
+  "description": "PHP Application for managing the identity session",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Devas\\IdentityFoundationAccount\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Phetsinorath William",
+      "email": "phetsinorath.w@sfeir.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {}
+}

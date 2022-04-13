@@ -3,5 +3,6 @@
 pkgs.mkShell {
   buildInputs = [
     pkgs.php
+    pkgs.php.packages.composer
   ];
 }
