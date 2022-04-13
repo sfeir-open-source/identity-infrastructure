@@ -1,12 +1,12 @@
 services:
   identity-foundation-app:
-    image: shikanime/identity-foundation-poc:${git rev-parse --short HEAD}
+    image: shikanime/identity-foundation-poc
     build: identity-foundation-app
     restart: unless-stopped
     ports:
       - 3000:3000
   identity-foundation-account:
-    image: shikanime/identity-foundation-poc-account:${git rev-parse --short HEAD}
+    image: shikanime/identity-foundation-poc-account
     build: identity-foundation-account
     restart: unless-stopped
     ports:
