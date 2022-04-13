@@ -6,6 +6,8 @@ services:
   identity-foundation-account:
     image: shikanime/identity-foundation-poc-account
     build: identity-foundation-account
+    environment:
+      IDENTITY_FOUNDATION_APP_URL: http://127.0.0.1:4455/app/home
     restart: unless-stopped
   oathkeeper:
     image: oryd/oathkeeper:v0.38@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc

@@ -60,7 +60,7 @@ authenticators:
   cookie_session:
     enabled: true
     config:
-      check_session_url: http://account/sessions/whoami.php
+      check_session_url: http://identity-foundation-account/sessions/whoami.php
       preserve_path: true
       extra_from: "@this"
       subject_from: "identity.id"
