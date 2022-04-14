@@ -9,17 +9,12 @@ services:
       service: identity-foundation-account
     environment:
       IDENTITY_FOUNDATION_APP_URL: http://127.0.0.1:4455/app/home
-    restart: unless-stopped
   oathkeeper:
-    image: oryd/oathkeeper:v0.38@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc
+    extends:
+      file: oathkeeper/compose.yaml
+      service: oathkeeper
     depends_on:
       - identity-foundation-account
     ports:
       - 4455:4455
       - 4456:4456
-    command: serve proxy -c "/etc/ory/oathkeeper/oathkeeper.yaml"
-    environment:
-      - LOG_LEVEL=debug
-    restart: on-failure
-    volumes:
-      - ./deploy/oathkeeper:/etc/ory/oathkeeper
