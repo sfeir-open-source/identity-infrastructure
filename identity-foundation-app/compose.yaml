@@ -1,0 +1,5 @@
+services:
+  identity-foundation-app:
+    image: shikanime/identity-foundation-poc
+    build: .
+    restart: unless-stopped

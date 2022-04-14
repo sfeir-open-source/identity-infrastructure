@@ -1,11 +1,12 @@
 services:
   identity-foundation-app:
-    image: shikanime/identity-foundation-poc
-    build: identity-foundation-app
-    restart: unless-stopped
+    extends:
+      file: identity-foundation-app/compose.yaml
+      service: identity-foundation-app
   identity-foundation-account:
-    image: shikanime/identity-foundation-poc-account
-    build: identity-foundation-account
+    extends:
+      file: identity-foundation-account/compose.yaml
+      service: identity-foundation-account
     environment:
       IDENTITY_FOUNDATION_APP_URL: http://127.0.0.1:4455/app/home
     restart: unless-stopped

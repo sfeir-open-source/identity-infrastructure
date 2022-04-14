@@ -1,0 +1,7 @@
+services:
+  identity-foundation-account:
+    image: shikanime/identity-foundation-poc-account
+    build: .
+    environment:
+      IDENTITY_FOUNDATION_APP_URL: http://127.0.0.1:4455/app/home
+    restart: unless-stopped
