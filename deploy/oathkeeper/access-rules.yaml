@@ -7,6 +7,7 @@
     url: "http://127.0.0.1:4455/account/<**>"
     methods:
       - GET
+      - POST
   authenticators:
     - handler: anonymous
   authorizer:
@@ -31,4 +32,4 @@
   errors:
     - handler: redirect
       config:
-        to: http://127.0.0.1:4455/account/
+        to: http://127.0.0.1:4455/account/flow/login.php
