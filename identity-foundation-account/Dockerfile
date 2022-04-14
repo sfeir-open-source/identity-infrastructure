@@ -16,11 +16,8 @@ RUN yarn build
 
 FROM docker.io/library/php:7.2-apache@sha256:4dc0f0115acf8c2f0df69295ae822e49f5ad5fe849725847f15aa0e5802b55f8
 
-# Define the current directory based on defacto community standard
-WORKDIR /var/www/html
-
 # Copy assets build
-COPY --from=assets /usr/src/app/public/css ./css
+COPY --from=assets /usr/src/app/public/css /var/www/html/css
 
 # Copy source
-COPY src src
+COPY src /var/www/html
