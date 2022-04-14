@@ -10,7 +10,7 @@ if (isset($_POST['login']) && isset($_POST['pwd'])) {
 
 <head>
   <meta charset="utf-8" />
-  <title>Sign Up - Account | Account</title>
+  <title>Sign Up | Account</title>
   <link rel="stylesheet" href="/account/css/global.css">
 </head>
 
