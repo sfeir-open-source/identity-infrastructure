@@ -5,4 +5,4 @@ services:
       - LOG_LEVEL=debug
     restart: on-failure
     volumes:
-      - secrets/id_token.jwks.json:/secrets/ory/oathkeeper/id_token.jwks.json
+      - ./secrets/id_token.jwks.json:/secrets/ory/oathkeeper/id_token.jwks.json
