@@ -7,8 +7,6 @@ services:
     extends:
       file: identity-foundation-account/compose.yaml
       service: identity-foundation-account
-    environment:
-      IDENTITY_FOUNDATION_APP_URL: http://127.0.0.1:4455/app/home
   oathkeeper:
     extends:
       file: oathkeeper/compose.yaml
