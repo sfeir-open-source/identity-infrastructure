@@ -1,0 +1,5 @@
+#!include:.gitignore
+
+# Development tools
+shell.nix
+compose.yaml
