@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Copy source
-COPY postcss.config.js tailwind.config.js .
+COPY postcss.config.js tailwind.config.js ./
 COPY assets assets
 COPY src src
 
