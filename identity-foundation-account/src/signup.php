@@ -1,10 +1,3 @@
-<?php
-if (isset($_POST['login']) && isset($_POST['pwd'])) {
-  session_start();
-  setcookie("PHPSESSID", uniqid(), time() + (86400 * 30), "/");
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
