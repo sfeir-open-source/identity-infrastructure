@@ -6,20 +6,20 @@ deploy-identity-foundation-account:
 	gcloud beta run deploy \
 		identity-foundation-account \
 		--max-instances 1 \
-		--no-allow-unauthenticated \
+		--allow-unauthenticated \
 		--source identity-foundation-account \
 		--port 80 \
-		--ingress internal
+		--ingress all
 
 .PHONY: deploy-identity-foundation-app
 deploy-identity-foundation-app:
 	gcloud beta run deploy \
 		identity-foundation-app \
 		--max-instances 1 \
-		--no-allow-unauthenticated \
+		--allow-unauthenticated \
 		--source identity-foundation-app \
 		--port 3000 \
-		--ingress internal
+		--ingress all
 
 .PHONY: deploy-oathkeeper-proxy
 deploy-oathkeeper-proxy:
@@ -27,7 +27,7 @@ deploy-oathkeeper-proxy:
 		oathkeeper-proxy \
 		--max-instances 1 \
 		--service-account oathkeeper@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com \
-		--no-allow-unauthenticated \
+		--allow-unauthenticated \
 		--source oathkeeper \
 		--port 4455 \
 		--update-secrets /secrets/ory/oathkeeper/id_token.jwks.json=oathkeeper-idtoken-jwks:latest \
@@ -39,11 +39,11 @@ deploy-oathkeeper-api:
 		oathkeeper-api \
 		--max-instances 1 \
 		--service-account oathkeeper@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com \
-		--no-allow-unauthenticated \
+		--allow-unauthenticated \
 		--source oathkeeper \
 		--port 4456 \
 		--update-secrets /secrets/ory/oathkeeper/id_token.jwks.json=oathkeeper-idtoken-jwks:latest \
-		--ingress internal
+		--ingress all
 
 .PHONY: deploy-oathkeeper-idtoken-jwks-version
 deploy-oathkeeper-idtoken-jwks-version:
