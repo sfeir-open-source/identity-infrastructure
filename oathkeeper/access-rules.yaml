@@ -1,11 +1,10 @@
 - id: ory:account:anonymous
   upstream:
-    url: https://identity-foundation-account-hqe4jti5bq-ew.a.run.app
+    url: http://identity-foundation-account
   match:
-    url: https://oathkeeper-proxy-hqe4jti5bq-ew.a.run.app/account/<**>
+    url: http://127.0.0.1:4455/account/<**>
     methods:
       - GET
-      - POST
   authenticators:
     - handler: anonymous
   authorizer:
@@ -15,9 +14,9 @@
 
 - id: ory:app:protected
   upstream:
-    url: https://identity-foundation-app-hqe4jti5bq-ew.a.run.app
+    url: http://identity-foundation-app:3000
   match:
-    url: https://oathkeeper-proxy-hqe4jti5bq-ew.a.run.app/app/<{home,api/*,favicon.ico,_next/static/**.css,_next/static/**.js,**.svg}>
+    url: http://127.0.0.1:4455/app/<{home,api/*,favicon.ico,_next/static/**.css,_next/static/**.js,**.svg}>
     methods:
       - GET
   authenticators:
@@ -29,4 +28,4 @@
   errors:
     - handler: redirect
       config:
-        to: https://oathkeeper-proxy-hqe4jti5bq-ew.a.run.app/account/flow/login.php?return_to=https://oathkeeper-proxy-hqe4jti5bq-ew.a.run.app/app/home
+        to: http://127.0.0.1:4455/account/flow/login.php?return_to=http://127.0.0.1:4455/app/home
