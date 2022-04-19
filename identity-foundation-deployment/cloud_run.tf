@@ -1,3 +1,9 @@
+locals {
+  oathkeeper_access_rules_secret_version = tonumber(element(split("/", google_secret_manager_secret_version.oathkeeper_access_rules.name), 5))
+  oathkeeper_config_secret_version       = tonumber(element(split("/", google_secret_manager_secret_version.oathkeeper_config.name), 5))
+  idtoken_jwks_secret_version            = tonumber(element(split("/", google_secret_manager_secret_version.idtoken_jwks.name), 5))
+}
+
 resource "google_cloud_run_service" "oathkeeper_proxy" {
   project                    = var.google_project
   name                       = "oathkeeper-proxy"
@@ -49,7 +55,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
           secret_name  = data.google_secret_manager_secret.oathkeeper_access_rules.secret_id
           default_mode = 256
           items {
-            key  = "latest"
+            key  = local.oathkeeper_access_rules_secret_version
             path = "access-rules.yaml"
           }
         }
@@ -60,7 +66,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
           secret_name  = data.google_secret_manager_secret.oathkeeper_config.secret_id
           default_mode = 256
           items {
-            key  = "latest"
+            key  = local.oathkeeper_config_secret_version
             path = "oathkeeper.yaml"
           }
         }
@@ -71,7 +77,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
           secret_name  = data.google_secret_manager_secret.idtoken_jwks.secret_id
           default_mode = 256
           items {
-            key  = "latest"
+            key  = local.idtoken_jwks_secret_version
             path = "id_token.jwks.json"
           }
         }
