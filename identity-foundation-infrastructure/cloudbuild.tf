@@ -4,17 +4,18 @@ locals {
   identity_foundation_app_container_image_name     = "${var.google_region}-docker.pkg.dev/${var.google_project}/identity-foundation-run/app"
 }
 
-resource "google_sourcerepo_repository" "identity_foundation" {
-  name = "identity-foundation"
-}
-
 resource "google_cloudbuild_trigger" "oathkeeper" {
+  project = var.google_project
+  name    = "oathkeeper"
   included_files = [
     "oathkeeper/**/*"
   ]
-  trigger_template {
-    tag_name  = var.git_tag_name
-    repo_name = google_sourcerepo_repository.identity_foundation.name
+  github {
+    owner = "infinity-blackhole"
+    name  = "identity-infrastructure"
+    push {
+      branch = "main"
+    }
   }
   build {
     images = [
@@ -49,12 +50,17 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_account" {
+  project = var.google_project
+  name    = "identity_foundation_account"
   included_files = [
     "identity-foundation-account/**/*"
   ]
-  trigger_template {
-    tag_name  = var.git_tag_name
-    repo_name = google_sourcerepo_repository.identity_foundation.name
+  github {
+    owner = "infinity-blackhole"
+    name  = "identity-infrastructure"
+    push {
+      branch = "main"
+    }
   }
   build {
     images = [
@@ -76,12 +82,17 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_app" {
+  project = var.google_project
+  name    = "identity_foundation_app"
   included_files = [
     "identity-foundation-app/**/*"
   ]
-  trigger_template {
-    tag_name  = var.git_tag_name
-    repo_name = google_sourcerepo_repository.identity_foundation.name
+  github {
+    owner = "infinity-blackhole"
+    name  = "identity-infrastructure"
+    push {
+      branch = "main"
+    }
   }
   build {
     images = [
@@ -100,13 +111,4 @@ resource "google_cloudbuild_trigger" "identity_foundation_app" {
   depends_on = [
     google_artifact_registry_repository.identity_foundation_container_registry
   ]
-}
-
-resource "google_artifact_registry_repository" "identity_foundation_container_registry" {
-  provider      = google-beta
-  project       = var.google_project
-  location      = var.google_region
-  repository_id = "identity-foundation-run"
-  description   = "Identity Foundation Run"
-  format        = "DOCKER"
 }

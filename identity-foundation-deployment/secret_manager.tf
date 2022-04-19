@@ -1,192 +1,15 @@
-resource "google_service_account" "runner" {
-  project      = var.google_project
-  account_id   = "identity-foundation-runner"
-  display_name = "Run Service Account"
-}
-
-resource "google_cloud_run_service" "oathkeeper_proxy" {
-  project                    = var.google_project
-  name                       = "oathkeeper-proxy"
-  location                   = var.google_region
-  autogenerate_revision_name = true
-
-  metadata {
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
-  }
-
-  template {
-    spec {
-      containers {
-        image = var.oathkeeper_container_image_name
-        ports {
-          container_port = 4455
-        }
-        command = [
-          "serve",
-          "proxy",
-          "-c",
-          "/secrets/oathkeeper-config/oathkeeper.yaml"
-        ]
-        resources {
-          limits = {
-            cpu    = "1000m"
-            memory = "128Mi"
-          }
-        }
-        volume_mounts {
-          name       = "oathkeeper-access-rules"
-          mount_path = "/secrets/oathkeeper-access-rules"
-        }
-        volume_mounts {
-          name       = "oathkeeper-config"
-          mount_path = "/secrets/oathkeeper-config"
-        }
-        volume_mounts {
-          name       = "idtoken-jwks"
-          mount_path = "/secrets/idtoken-jwks"
-        }
-      }
-      service_account_name = google_service_account.runner.email
-      volumes {
-        name = "oathkeeper-access-rules"
-        secret {
-          secret_name  = google_secret_manager_secret.oathkeeper_access_rules.secret_id
-          default_mode = 292 # 0444
-          items {
-            key  = "latest"
-            path = "access-rules.yaml"
-            mode = 256 # 0400
-          }
-        }
-      }
-      volumes {
-        name = "oathkeeper-config"
-        secret {
-          secret_name  = google_secret_manager_secret.oathkeeper_config.secret_id
-          default_mode = 292 # 0444
-          items {
-            key  = "latest"
-            path = "oathkeeper.yaml"
-            mode = 256 # 0400
-          }
-        }
-      }
-      volumes {
-        name = "idtoken-jwks"
-        secret {
-          secret_name  = google_secret_manager_secret.idtoken_jwks.secret_id
-          default_mode = 292 # 0444
-          items {
-            key  = "latest"
-            path = "id_token.jwks.json"
-            mode = 256 # 0400
-          }
-        }
-      }
-    }
-
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/maxScale" = "3"
-      }
-    }
-  }
-}
-
-resource "google_cloud_run_service" "identity_foundation_account" {
-  project                    = var.google_project
-  name                       = "identity-foundation-account"
-  location                   = var.google_region
-  autogenerate_revision_name = true
-
-  metadata {
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
-  }
-
-  template {
-    spec {
-      containers {
-        image = var.identity_foundation_account_container_image_name
-        ports {
-          container_port = 80
-        }
-        resources {
-          limits = {
-            cpu    = "1000m"
-            memory = "128Mi"
-          }
-        }
-
-      }
-      service_account_name = google_service_account.runner.email
-    }
-
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/maxScale" = "3"
-      }
-    }
-  }
-}
-
-resource "google_cloud_run_service" "identity_foundation_app" {
-  project                    = var.google_project
-  name                       = "identity-foundation-app"
-  location                   = var.google_region
-  autogenerate_revision_name = true
-
-  metadata {
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
-  }
-
-  template {
-    spec {
-      containers {
-        image = var.identity_foundation_app_container_image_name
-        ports {
-          container_port = 3000
-        }
-        resources {
-          limits = {
-            cpu    = "1000m"
-            memory = "128Mi"
-          }
-        }
-
-      }
-      service_account_name = google_service_account.runner.email
-    }
-
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/maxScale" = "3"
-      }
-    }
-  }
-}
-
-resource "google_secret_manager_secret" "oathkeeper_access_rules" {
+data "google_secret_manager_secret" "oathkeeper_access_rules" {
   project   = var.google_project
   secret_id = "oathkeeper-access-rules"
-  replication {
-    automatic = true
-  }
 }
 
 resource "google_secret_manager_secret_version" "oathkeeper_access_rules" {
-  secret = google_secret_manager_secret.oathkeeper_access_rules.id
+  secret = data.google_secret_manager_secret.oathkeeper_access_rules.id
   secret_data = yamlencode([
     {
       id = "ory:account:anonymous",
       upstream = {
-        url        = var.identity_foundation_account_public_url,
-        strip_path = "/account"
+        url = var.identity_foundation_account_public_url
       },
       match = {
         url = "${var.oathkeeper_proxy_public_url}/account/<**>",
@@ -245,16 +68,13 @@ resource "google_secret_manager_secret_version" "oathkeeper_access_rules" {
   ])
 }
 
-resource "google_secret_manager_secret" "oathkeeper_config" {
+data "google_secret_manager_secret" "oathkeeper_config" {
   project   = var.google_project
   secret_id = "oathkeeper-config"
-  replication {
-    automatic = true
-  }
 }
 
 resource "google_secret_manager_secret_version" "oathkeeper_config" {
-  secret = google_secret_manager_secret.oathkeeper_config.id
+  secret = data.google_secret_manager_secret.oathkeeper_config.id
   secret_data = yamlencode({
     version = "v0.38.4-beta.1",
     log = {
@@ -337,7 +157,7 @@ resource "google_secret_manager_secret_version" "oathkeeper_config" {
       cookie_session = {
         enabled = true,
         config = {
-          check_session_url = "${var.identity_foundation_account_public_url}/sessions/whoami.php",
+          check_session_url = "${var.identity_foundation_account_public_url}/account/sessions/whoami.php",
           preserve_path     = true,
           extra_from        = "@this",
           subject_from      = "identity.id",
@@ -363,7 +183,7 @@ resource "google_secret_manager_secret_version" "oathkeeper_config" {
         enabled = true,
         config = {
           issuer_url = "${var.oathkeeper_proxy_public_url}/",
-          jwks_url   = "file:///secrets/ory/oathkeeper/id_token.jwks.json",
+          jwks_url   = "file:///secrets/idtoken-jwks/id_token.jwks.json",
           claims     = "{\"session\": {{ .Extra | toJson }}}"
         }
       }
@@ -371,16 +191,13 @@ resource "google_secret_manager_secret_version" "oathkeeper_config" {
   })
 }
 
-resource "google_secret_manager_secret" "idtoken_jwks" {
+data "google_secret_manager_secret" "idtoken_jwks" {
   project   = var.google_project
   secret_id = "idtoken-jwks"
-  replication {
-    automatic = true
-  }
 }
 
 resource "google_secret_manager_secret_version" "idtoken_jwks" {
-  secret = google_secret_manager_secret.idtoken_jwks.id
+  secret = data.google_secret_manager_secret.idtoken_jwks.id
   secret_data = jsonencode({
     keys = [
       {

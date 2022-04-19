@@ -1,7 +1,6 @@
 - id: ory:account:anonymous
   upstream:
     url: https://identity-foundation-account-hqe4jti5bq-ew.a.run.app
-    strip_path: /account
   match:
     url: https://oathkeeper-proxy-hqe4jti5bq-ew.a.run.app/account/<**>
     methods:

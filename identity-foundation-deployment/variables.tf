@@ -8,9 +8,19 @@ variable "google_region" {
   description = "The Google Cloud region"
 }
 
-variable "git_tag_name" {
+variable "oathkeeper_container_image_name" {
   type        = string
-  description = "The Git tag name"
+  description = "The container image name for Oathkeeper"
+}
+
+variable "identity_foundation_account_container_image_name" {
+  type        = string
+  description = "The container image name for Identity Foundation Account"
+}
+
+variable "identity_foundation_app_container_image_name" {
+  type        = string
+  description = "The container image name for Identity Foundation App"
 }
 
 variable "oathkeeper_proxy_public_url" {

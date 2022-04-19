@@ -19,6 +19,13 @@
           identity-foundation-app = import ./identity-foundation-app/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
+          identity-foundation-deployment = import ./identity-foundation-deployment/shell.nix {
+            pkgs = import nixpkgs { inherit system; };
+          };
+          identity-foundation-infrastructure = import ./identity-foundation-infrastructure/shell.nix {
+            pkgs = import nixpkgs { inherit system; };
+          };
+
         });
   };
 }
