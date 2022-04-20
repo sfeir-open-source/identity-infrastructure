@@ -48,7 +48,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
           mount_path = "/secrets/idtoken-jwks"
         }
       }
-      service_account_name = data.google_service_account.runner.email
+      service_account_name = google_service_account.runner.email
       volumes {
         name = "oathkeeper-access-rules"
         secret {
@@ -132,7 +132,7 @@ resource "google_cloud_run_service" "identity_foundation_account" {
         }
 
       }
-      service_account_name = data.google_service_account.runner.email
+      service_account_name = google_service_account.runner.email
     }
 
     metadata {
@@ -178,7 +178,7 @@ resource "google_cloud_run_service" "identity_foundation_app" {
         }
 
       }
-      service_account_name = data.google_service_account.runner.email
+      service_account_name = google_service_account.runner.email
     }
 
     metadata {
