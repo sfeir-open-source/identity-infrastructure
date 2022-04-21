@@ -1,25 +1,24 @@
-FROM docker.io/library/node:17.4.0-bullseye-slim@sha256:127e7abf453152266a11ccbed1510dff5241b671855e32611d19fb348a8f4a41 AS base
+FROM docker.io/library/node:17.4.0-bullseye-slim@sha256:127e7abf453152266a11ccbed1510dff5241b671855e32611d19fb348a8f4a41 AS runtime
 
 # Define the current directory based on defacto community standard
 WORKDIR /usr/src/app
-
-FROM base AS runtime
 
 # Pull production only depedencies
 COPY package.json yarn.lock ./
 RUN yarn install --production
 
-FROM runtime AS builder
+FROM runtime AS devtools
 
 # Pull all depedencies
 RUN yarn install
 
-FROM builder AS source
+FROM devtools AS build
 
 # Copy source
-COPY . .
-
-FROM source AS build
+COPY public public
+COPY styles styles
+COPY pages pages
+COPY tsconfig.json next-env.d.ts next.config.js ./
 
 # Build application
 ENV NODE_ENV=production
