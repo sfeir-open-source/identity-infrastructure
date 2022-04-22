@@ -37,3 +37,8 @@ variable "identity_foundation_app_public_url" {
   type        = string
   description = "The public URL of the identity-foundation-app service"
 }
+
+variable "id_token_jwks_url" {
+  type        = string
+  description = "The JSON Web Key which is used to validate the signature of a signed JWT"
+}

@@ -11,7 +11,7 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
     "oathkeeper/**/*"
   ]
   github {
-    owner = "infinity-blackhole"
+    owner = "sfeir-open-source"
     name  = "identity-infrastructure"
     push {
       branch = "main"
@@ -56,7 +56,7 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
     "identity-foundation-account/**/*"
   ]
   github {
-    owner = "infinity-blackhole"
+    owner = "sfeir-open-source"
     name  = "identity-infrastructure"
     push {
       branch = "main"
@@ -88,7 +88,7 @@ resource "google_cloudbuild_trigger" "identity_foundation_app" {
     "identity-foundation-app/**/*"
   ]
   github {
-    owner = "infinity-blackhole"
+    owner = "sfeir-open-source"
     name  = "identity-infrastructure"
     push {
       branch = "main"

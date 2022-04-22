@@ -25,7 +25,9 @@
           identity-foundation-infrastructure = import ./identity-foundation-infrastructure/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
-
+          identity-foundation-oathkeeper = import ./identity-foundation-oathkeeper/shell.nix {
+            pkgs = import nixpkgs { inherit system; };
+          };
         });
   };
 }
