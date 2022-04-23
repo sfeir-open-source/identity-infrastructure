@@ -23,4 +23,3 @@ FROM docker.io/library/php:7.2-apache@sha256:4dc0f0115acf8c2f0df69295ae822e49f5a
 # Copy assets build
 COPY --from=build /usr/src/app/public/account/css /var/www/html/account/css
 COPY --from=build /usr/src/app/src /var/www/html
-COPY public/.well-known /var/www/html/.well-known

@@ -1,6 +1,7 @@
 locals {
   oathkeeper_access_rules_secret_version = tonumber(element(split("/", google_secret_manager_secret_version.oathkeeper_access_rules.name), 5))
   oathkeeper_config_secret_version       = tonumber(element(split("/", google_secret_manager_secret_version.oathkeeper_config.name), 5))
+  idtoken_jwks_secret_version            = tonumber(element(split("/", google_secret_manager_secret_version.idtoken_jwks.name), 5))
 }
 
 resource "google_cloud_run_service" "oathkeeper_proxy" {
@@ -42,12 +43,16 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
           name       = "oathkeeper-config"
           mount_path = "/secrets/oathkeeper-config"
         }
+        volume_mounts {
+          name       = "idtoken-jwks"
+          mount_path = "/secrets/idtoken-jwks"
+        }
       }
       service_account_name = google_service_account.runner.email
       volumes {
         name = "oathkeeper-access-rules"
         secret {
-          secret_name  = data.google_secret_manager_secret.oathkeeper_access_rules.secret_id
+          secret_name  = google_secret_manager_secret.oathkeeper_access_rules.secret_id
           default_mode = 256
           items {
             key  = local.oathkeeper_access_rules_secret_version
@@ -58,11 +63,22 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
       volumes {
         name = "oathkeeper-config"
         secret {
-          secret_name  = data.google_secret_manager_secret.oathkeeper_config.secret_id
+          secret_name  = google_secret_manager_secret.oathkeeper_config.secret_id
           default_mode = 256
           items {
             key  = local.oathkeeper_config_secret_version
             path = "oathkeeper.yaml"
+          }
+        }
+      }
+      volumes {
+        name = "idtoken-jwks"
+        secret {
+          secret_name  = google_secret_manager_secret.idtoken_jwks.secret_id
+          default_mode = 256
+          items {
+            key  = local.idtoken_jwks_secret_version
+            path = "id_token.jwks.json"
           }
         }
       }
@@ -77,7 +93,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
   depends_on = [
     google_secret_manager_secret_version.oathkeeper_access_rules,
     google_secret_manager_secret_version.oathkeeper_config,
-    google_cloud_run_service.identity_foundation_account
+    google_secret_manager_secret_version.idtoken_jwks
   ]
 }
 

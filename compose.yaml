@@ -14,6 +14,7 @@ services:
     restart: on-failure
     volumes:
       - ./identity-foundation-oathkeeper/access-rules.yaml:/secrets/oathkeeper-access-rules/access-rules.yaml
+      - ./identity-foundation-infrastructure/id_token.jwks.json:/secrets/idtoken-jwks/id_token.jwks.json
       - ./identity-foundation-oathkeeper/.oathkeeper.yaml:/home/ory/.oathkeeper.yaml
     depends_on:
       - identity-foundation-account

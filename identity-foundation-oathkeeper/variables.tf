@@ -19,5 +19,5 @@ variable "identity_foundation_app_public_url" {
 variable "id_token_jwks_url" {
   type        = string
   description = "The JSON Web Key which is used to validate the signature of a signed JWT"
-  default     = "http://identity-foundation-account/.well-known/jwks.json"
+  default     = "file:///secrets/idtoken-jwks/id_token.jwks.json"
 }
