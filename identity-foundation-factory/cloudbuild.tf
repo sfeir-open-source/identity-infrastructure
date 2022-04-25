@@ -1,7 +1,19 @@
 locals {
-  oathkeeper_container_image_name                  = "${var.google_region}-docker.pkg.dev/${var.google_project}/identity-foundation-run/oathkeeper"
-  identity_foundation_account_container_image_name = "${var.google_region}-docker.pkg.dev/${var.google_project}/identity-foundation-run/account"
-  identity_foundation_app_container_image_name     = "${var.google_region}-docker.pkg.dev/${var.google_project}/identity-foundation-run/app"
+  oathkeeper_container_image_name                  = join("/", [
+    "${google_artifact_registry_repository.identity_foundation_container_registry.location}-docker.pkg.dev",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/oathkeeper"
+  ])
+  identity_foundation_account_container_image_name = join("/", [
+    "${google_artifact_registry_repository.identity_foundation_container_registry.location}-docker.pkg.dev",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/account"
+  ])
+  identity_foundation_app_container_image_name     = join("/", [
+    "${google_artifact_registry_repository.identity_foundation_container_registry.location}-docker.pkg.dev",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
+    "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/app"
+  ])
 }
 
 resource "google_cloudbuild_trigger" "oathkeeper" {
@@ -37,9 +49,6 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
       ]
     }
   }
-  depends_on = [
-    google_artifact_registry_repository.identity_foundation_container_registry
-  ]
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_account" {
@@ -69,9 +78,6 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
       ]
     }
   }
-  depends_on = [
-    google_artifact_registry_repository.identity_foundation_container_registry
-  ]
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_app" {
@@ -101,7 +107,4 @@ resource "google_cloudbuild_trigger" "identity_foundation_app" {
       ]
     }
   }
-  depends_on = [
-    google_artifact_registry_repository.identity_foundation_container_registry
-  ]
 }
