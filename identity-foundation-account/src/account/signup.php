@@ -17,7 +17,7 @@
         <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="password" placeholder="Password" />
         <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="confirm_password" placeholder="Confirm Password" />
 
-        <button type="submit" class="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1">Create Account</button>
+        <button type="submit" class="w-full text-center py-3 rounded bg-green-400 text-white hover:bg-green-400-dark focus:outline-none my-1">Create Account</button>
       </div>
 
       <div class="text-grey-dark mt-6">
