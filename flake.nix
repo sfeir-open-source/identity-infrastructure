@@ -13,19 +13,19 @@
     devShells = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.unix
       (system:
         {
-          identity-foundation-account = import ./identity-foundation-account/shell.nix {
+          identityFoundationAccount = import ./identity-foundation-account/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
-          identity-foundation-app = import ./identity-foundation-app/shell.nix {
+          identityFoundationApp = import ./identity-foundation-app/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
-          identity-foundation-deployment = import ./identity-foundation-deployment/shell.nix {
+          identityFoundationFactory = import ./identity-foundation-factory/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
-          identity-foundation-infrastructure = import ./identity-foundation-infrastructure/shell.nix {
+          identityFoundationInfrastructure = import ./identity-foundation-infrastructure/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
-          identity-foundation-oathkeeper = import ./identity-foundation-oathkeeper/shell.nix {
+          identityFoundationOathkeeper = import ./identity-foundation-oathkeeper/shell.nix {
             pkgs = import nixpkgs { inherit system; };
           };
         });
