@@ -5,10 +5,10 @@ locals {
 }
 
 resource "google_cloudbuild_trigger" "oathkeeper" {
-  project = var.google_project
+  project = "${var.google_project}/locations/${var.google_region}"
   name    = "oathkeeper"
   included_files = [
-    "oathkeeper/**/*"
+    "identity-foundation-factory/**/*"
   ]
   github {
     owner = "sfeir-open-source"
@@ -25,21 +25,14 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
       name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
       args = [
         "pull",
-        "oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc"
+        "docker.io/oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc"
       ]
     }
     step {
       name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
       args = [
         "tag",
-        "oryd/oathkeeper",
-        local.oathkeeper_container_image_name
-      ]
-    }
-    step {
-      name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
-      args = [
-        "push",
+        "docker.io/oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc",
         local.oathkeeper_container_image_name
       ]
     }
@@ -50,8 +43,8 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_account" {
-  project = var.google_project
-  name    = "identity_foundation_account"
+  project = "${var.google_project}/locations/${var.google_region}"
+  name    = "identity-foundation-account"
   included_files = [
     "identity-foundation-account/**/*"
   ]
@@ -82,8 +75,8 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_app" {
-  project = var.google_project
-  name    = "identity_foundation_app"
+  project = "${var.google_project}/locations/${var.google_region}"
+  name    = "identity-foundation-app"
   included_files = [
     "identity-foundation-app/**/*"
   ]
