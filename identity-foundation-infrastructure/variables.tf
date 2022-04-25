@@ -38,7 +38,7 @@ variable "identity_foundation_app_public_url" {
   description = "The public URL of the identity-foundation-app service"
 }
 
-variable "jwks_keys" {
-  type        = list(map(any))
+variable "ciphertext_jwks_keys" {
+  type        = string
   description = "The JSON Web Key which is used to validate the signature of a signed JWT"
 }
