@@ -4,6 +4,6 @@ output "oathkeeper_access_rules" {
 }
 
 output "oathkeeper_config" {
-  value     = local_sensitive_file.oathkeeper_config
+  value     = local_file.oathkeeper_config
   sensitive = true
 }

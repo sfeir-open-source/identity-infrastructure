@@ -54,16 +54,13 @@ resource "local_file" "oathkeeper_access_rules" {
       errors = [
         {
           handler = "redirect"
-          config = {
-            to = "${var.oathkeeper_proxy_public_url}/account/flow/login.php"
-          }
         }
       ]
     }
   ])
 }
 
-resource "local_sensitive_file" "oathkeeper_config" {
+resource "local_file" "oathkeeper_config" {
   filename = "${path.module}/.oathkeeper.yaml"
   content = yamlencode({
     version = "v0.38.4-beta.1"
@@ -133,9 +130,7 @@ resource "local_sensitive_file" "oathkeeper_config" {
     }
     access_rules = {
       matching_strategy = "glob"
-      repositories = [
-        "file:///secrets/oathkeeper-access-rules/access-rules.yaml"
-      ]
+      repositories = var.oathkeeper_access_rules_repositories
     }
     authenticators = {
       anonymous = {
