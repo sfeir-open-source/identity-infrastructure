@@ -34,17 +34,17 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
       local.oathkeeper_container_image_name
     ]
     step {
-      name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
+      name = var.docker_container_image_name
       args = [
         "pull",
-        "docker.io/oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc"
+        var.oathkeeper_container_image_name
       ]
     }
     step {
-      name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
+      name = var.docker_container_image_name
       args = [
         "tag",
-        "docker.io/oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc",
+        var.oathkeeper_container_image_name,
         local.oathkeeper_container_image_name
       ]
     }
@@ -69,7 +69,7 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
       local.identity_foundation_account_container_image_name
     ]
     step {
-      name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
+      name = var.docker_container_image_name
       args = [
         "build",
         "-t",
@@ -98,7 +98,7 @@ resource "google_cloudbuild_trigger" "identity_foundation_app" {
       local.identity_foundation_app_container_image_name
     ]
     step {
-      name = "gcr.io/cloud-builders/docker@sha256:f42c653aeae55fea4cd318a9443823c77243929dae6bb784b9eef21e1ab40d09"
+      name = var.docker_container_image_name
       args = [
         "build",
         "-t",
