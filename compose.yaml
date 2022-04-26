@@ -3,6 +3,9 @@ services:
     extends:
       file: identity-foundation-app/compose.yaml
       service: identity-foundation-app
+    environment:
+      USERNAME: john
+      PASSWORD: JR6BshsDvAPDCv
   identity-foundation-account:
     extends:
       file: identity-foundation-account/compose.yaml

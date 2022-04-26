@@ -1,5 +1,12 @@
 <?php
-if (isset($_POST['username']) && isset($_POST['password'])) {
+$username = getenv("USERNAME");
+$password = getenv("PASSWORD");
+if (
+  !is_null($username) &&
+  !is_null($password) &&
+  $_POST['username'] == $username &&
+  $_POST['password'] == $password
+) {
   session_start();
   setcookie("PHPSESSID", uniqid(), time() + (86400 * 30), "/");
   parse_str($_SERVER["QUERY_STRING"], $qs);
