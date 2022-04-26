@@ -90,11 +90,6 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
       }
     }
   }
-  depends_on = [
-    google_secret_manager_secret_version.oathkeeper_access_rules,
-    google_secret_manager_secret_version.oathkeeper_config,
-    google_secret_manager_secret_version.idtoken_jwks
-  ]
 }
 
 resource "google_cloud_run_service_iam_member" "oathkeeper_proxy_all_user_run_invoker" {
