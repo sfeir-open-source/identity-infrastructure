@@ -130,7 +130,7 @@ resource "local_file" "oathkeeper_config" {
     }
     access_rules = {
       matching_strategy = "glob"
-      repositories = var.oathkeeper_access_rules_repositories
+      repositories      = var.oathkeeper_access_rules_repositories
     }
     authenticators = {
       anonymous = {

@@ -1,5 +1,5 @@
 locals {
-  oathkeeper_container_image_name                  = join("/", [
+  oathkeeper_container_image_name = join("/", [
     "${google_artifact_registry_repository.identity_foundation_container_registry.location}-docker.pkg.dev",
     "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
     "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/oathkeeper"
@@ -9,7 +9,7 @@ locals {
     "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
     "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/account"
   ])
-  identity_foundation_app_container_image_name     = join("/", [
+  identity_foundation_app_container_image_name = join("/", [
     "${google_artifact_registry_repository.identity_foundation_container_registry.location}-docker.pkg.dev",
     "${google_artifact_registry_repository.identity_foundation_container_registry.project}",
     "${google_artifact_registry_repository.identity_foundation_container_registry.repository_id}/app"

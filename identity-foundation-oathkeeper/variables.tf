@@ -23,7 +23,7 @@ variable "id_token_jwks_url" {
 }
 
 variable "oathkeeper_access_rules_repositories" {
-  type = list(string)
+  type        = list(string)
   description = "The list of repositories which contain the Oathkeeper access rules"
   default = [
     "file:///etc/ory/oathkeeper/access-rules.yaml"
