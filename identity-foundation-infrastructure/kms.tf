@@ -4,12 +4,12 @@ data "google_kms_key_ring" "terraform" {
   location = var.google_region
 }
 
-data "google_kms_crypto_key" "sensible" {
-  name     = "sensible"
+data "google_kms_crypto_key" "sensitive" {
+  name     = "sensitive"
   key_ring = data.google_kms_key_ring.terraform.id
 }
 
 data "google_kms_secret" "jwks_keys" {
-  crypto_key = data.google_kms_crypto_key.sensible.id
+  crypto_key = data.google_kms_crypto_key.sensitive.id
   ciphertext = var.ciphertext_jwks_keys
 }
