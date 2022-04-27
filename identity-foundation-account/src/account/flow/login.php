@@ -4,6 +4,8 @@ $password = getenv("PASSWORD");
 if (
   !is_null($username) &&
   !is_null($password) &&
+  isset($_POST['username']) &&
+  isset($_POST['password']) &&
   $_POST['username'] == $username &&
   $_POST['password'] == $password
 ) {
