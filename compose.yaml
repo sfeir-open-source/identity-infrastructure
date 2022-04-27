@@ -3,13 +3,13 @@ services:
     extends:
       file: identity-foundation-app/compose.yaml
       service: identity-foundation-app
-    environment:
-      USERNAME: john
-      PASSWORD: JR6BshsDvAPDCv
   identity-foundation-account:
     extends:
       file: identity-foundation-account/compose.yaml
       service: identity-foundation-account
+    environment:
+      USERNAME: john
+      PASSWORD: JR6BshsDvAPDCv
   identity-foundation-oathkeeper:
     image: oryd/oathkeeper@sha256:44d22a42c24ba77cea84ea1523616781d4461284b2f2f8adf6a5602a0aecd3fc
     environment:
