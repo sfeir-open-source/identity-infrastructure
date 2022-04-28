@@ -34,5 +34,5 @@ override.tf.json
 terraform.rc
 
 # Generated local files
-.oathkeeper.yaml
-access-rules.yaml
+.oathkeeper.json
+access-rules.json

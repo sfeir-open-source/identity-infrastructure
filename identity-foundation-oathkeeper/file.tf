@@ -1,6 +1,6 @@
 resource "local_file" "oathkeeper_access_rules" {
-  filename = "${path.module}/access-rules.yaml"
-  content = yamlencode([
+  filename = "${path.module}/access-rules.json"
+  content = jsonencode([
     {
       id = "ory:account:anonymous"
       upstream = {
@@ -28,12 +28,43 @@ resource "local_file" "oathkeeper_access_rules" {
       ]
     },
     {
+      id = "ory:apis:protected"
+      upstream = {
+        url        = var.identity_foundation_apis_public_url
+        strip_path = "/apis"
+      }
+      match = {
+        url = "${var.oathkeeper_proxy_public_url}/apis/<**>",
+        methods = [
+          "GET"
+        ]
+      }
+      authenticators = [
+        {
+          handler = "cookie_session"
+        }
+      ]
+      authorizer = {
+        handler = "allow"
+      }
+      mutators = [
+        {
+          handler = "id_token"
+        }
+      ]
+      errors = [
+        {
+          handler = "redirect"
+        }
+      ]
+    },
+    {
       id = "ory:app:protected"
       upstream = {
         url = var.identity_foundation_app_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/app/<{home,api/*,favicon.ico,_next/static/**.css,_next/static/**.js,**.svg}>",
+        url = "${var.oathkeeper_proxy_public_url}/app/<**>",
         methods = [
           "GET"
         ]
@@ -61,8 +92,8 @@ resource "local_file" "oathkeeper_access_rules" {
 }
 
 resource "local_file" "oathkeeper_config" {
-  filename = "${path.module}/.oathkeeper.yaml"
-  content = yamlencode({
+  filename = "${path.module}/.oathkeeper.json"
+  content = jsonencode({
     version = "v0.38.4-beta.1"
     log = {
       level  = "debug"
@@ -167,9 +198,14 @@ resource "local_file" "oathkeeper_config" {
       id_token = {
         enabled = true
         config = {
-          issuer_url = var.identity_foundation_account_public_url
+          issuer_url = var.oathkeeper_api_public_url
           jwks_url   = var.id_token_jwks_url
-          claims     = "{\"session\": {{ .Extra | toJson }}}"
+          claims     = <<-EOF
+            {
+              "aud": "${var.identity_foundation_app_public_url}",
+              "session": {{ .Extra | toJson }}
+            }
+          EOF
         }
       }
     }

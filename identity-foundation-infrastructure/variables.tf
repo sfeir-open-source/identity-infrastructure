@@ -28,6 +28,11 @@ variable "oathkeeper_proxy_public_url" {
   description = "The public URL of the Oathkeeper proxy service"
 }
 
+variable "oathkeeper_api_public_url" {
+  type        = string
+  description = "The public URL of the Oathkeeper API service"
+}
+
 variable "identity_foundation_account_public_url" {
   type        = string
   description = "The public URL of the identity-foundation-account service"
@@ -41,4 +46,9 @@ variable "identity_foundation_app_public_url" {
 variable "ciphertext_jwks_keys" {
   type        = string
   description = "The JSON Web Key which is used to validate the signature of a signed JWT"
+}
+
+variable "ciphertext_identity_foundation_account_credentials" {
+  type        = string
+  description = "The credentials for the Identity Foundation Account"
 }
