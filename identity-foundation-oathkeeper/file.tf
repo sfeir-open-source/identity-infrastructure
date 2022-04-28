@@ -34,7 +34,7 @@ resource "local_file" "oathkeeper_access_rules" {
         strip_path = "/apis"
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/apis/<**>",
+        url = "${var.oathkeeper_proxy_public_url}/apis/<**>"
         methods = [
           "GET"
         ]
