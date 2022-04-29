@@ -7,7 +7,7 @@ resource "local_file" "oathkeeper_access_rules" {
         url = var.identity_foundation_account_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/account/<**>"
+        url = "${var.oathkeeper_proxy_public_url}/auth/<**>"
         methods = [
           "GET",
           "POST"
@@ -133,7 +133,7 @@ resource "local_file" "oathkeeper_config" {
         redirect = {
           enabled = true
           config = {
-            to = "${var.oathkeeper_proxy_public_url}/account/flow/login.php?return_to=${var.oathkeeper_proxy_public_url}/app/home"
+            to = "${var.oathkeeper_proxy_public_url}/auth/login.php?redirect=${var.oathkeeper_proxy_public_url}/app/home"
             when = [
               {
                 error = [
@@ -173,7 +173,7 @@ resource "local_file" "oathkeeper_config" {
       cookie_session = {
         enabled = true
         config = {
-          check_session_url = "${var.identity_foundation_account_public_url}/account/sessions/whoami.php"
+          check_session_url = "${var.identity_foundation_account_public_url}/auth/whoami.php"
           preserve_path     = true
           extra_from        = "@this"
           subject_from      = "identity.id"

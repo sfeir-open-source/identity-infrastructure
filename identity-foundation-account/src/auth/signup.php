@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Sign Up | Account</title>
-  <link rel="stylesheet" href="/account/css/global.css">
+  <link rel="stylesheet" href="/auth/css/global.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 
       <div class="text-grey-dark mt-6">
         Already have an account?
-        <a class="no-underline border-b border-blue text-blue" href="/account/flow/login.php">
+        <a class="no-underline border-b border-blue text-blue" href="/auth/login.php">
           Log in
         </a>.
       </div>

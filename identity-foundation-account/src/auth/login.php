@@ -12,7 +12,7 @@ if (
   session_start();
   setcookie("PHPSESSID", uniqid(), time() + (86400 * 30), "/");
   parse_str($_SERVER["QUERY_STRING"], $qs);
-  header("Location: " . $qs["return_to"]);
+  header("Location: " . $qs["redirect"]);
 }
 ?>
 
@@ -22,7 +22,7 @@ if (
 <head>
   <meta charset="utf-8" />
   <title>Sign In | Account</title>
-  <link rel="stylesheet" href="/account/css/global.css">
+  <link rel="stylesheet" href="/auth/css/global.css">
 </head>
 
 <body>
@@ -37,7 +37,7 @@ if (
 
       <div class="text-grey-dark mt-6">
         Don't have an account?
-        <a class="no-underline border-b border-blue text-blue" href="/account/signup.php">
+        <a class="no-underline border-b border-blue text-blue" href="/auth/signup.php">
           Sign Up
         </a>.
       </div>
