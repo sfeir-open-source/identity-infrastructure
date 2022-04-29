@@ -64,7 +64,7 @@ resource "local_file" "oathkeeper_access_rules" {
         url = var.identity_foundation_app_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/app/<**>",
+        url = "${var.oathkeeper_proxy_public_url}/<**>",
         methods = [
           "GET"
         ]
@@ -174,7 +174,6 @@ resource "local_file" "oathkeeper_config" {
         enabled = true
         config = {
           check_session_url = "${var.identity_foundation_account_public_url}/auth/whoami.php"
-          preserve_path     = true
           extra_from        = "@this"
           subject_from      = "identity.id"
           only = [
