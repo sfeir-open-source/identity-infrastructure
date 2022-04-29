@@ -1,14 +1,21 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 $username = getenv("USERNAME");
 $password = getenv("PASSWORD");
+
 if (!is_null($username) && !is_null($password)) {
   if (isset($_POST['username']) && isset($_POST['password'])) {
     if ($_POST['username'] == $username && $_POST['password'] == $password) {
       session_start();
       setcookie("PHPSESSID", uniqid(), time() + (86400 * 30), "/");
       parse_str($_SERVER["QUERY_STRING"], $qs);
-      header("Location: " . $qs["redirect"]);
-      exit;
+      if (headers_sent()) {
+        die("Headers already sent");
+      } else {
+        exit(header("Location: " . $qs["redirect"]));
+      }
     } else {
       http_response_code(401);
       exit;
