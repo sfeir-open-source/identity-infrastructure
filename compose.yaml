@@ -16,8 +16,8 @@ services:
       - LOG_LEVEL=debug
     restart: on-failure
     volumes:
-      - ./identity-foundation-oathkeeper/access-rules.yaml:/etc/ory/oathkeeper/access-rules.yaml
-      - ./identity-foundation-oathkeeper/.oathkeeper.yaml:/home/ory/.oathkeeper.yaml
+      - ./identity-foundation-oathkeeper/access-rules.json:/etc/ory/oathkeeper/access-rules.json
+      - ./identity-foundation-oathkeeper/.oathkeeper.json:/home/ory/.oathkeeper.json
       - ./identity-foundation-infrastructure/id_token.jwks.json:/etc/ory/oathkeeper/id_token.jwks.json
     depends_on:
       - identity-foundation-account
