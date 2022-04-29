@@ -6,11 +6,6 @@ resource "google_api_gateway_api" "apis" {
   project  = var.google_project
   provider = google-beta
   api_id   = "identity-foundation-apis"
-  depends_on = [
-    google_project_service.api_gateway,
-    google_project_service.service_control,
-    google_project_service.service_management
-  ]
 }
 
 resource "google_api_gateway_api_config" "apis" {
@@ -29,11 +24,6 @@ resource "google_api_gateway_api_config" "apis" {
       google_service_account = google_service_account.apis.email
     }
   }
-  depends_on = [
-    google_project_service.api_gateway,
-    google_project_service.service_control,
-    google_project_service.service_management
-  ]
 }
 
 resource "google_api_gateway_gateway" "apis" {
@@ -42,9 +32,4 @@ resource "google_api_gateway_gateway" "apis" {
   region     = var.google_region
   api_config = google_api_gateway_api_config.apis.id
   gateway_id = local.identity_foundation_apis_config_revision_name
-  depends_on = [
-    google_project_service.api_gateway,
-    google_project_service.service_control,
-    google_project_service.service_management
-  ]
 }
