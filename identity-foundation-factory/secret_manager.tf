@@ -4,6 +4,9 @@ resource "google_secret_manager_secret" "oathkeeper_access_rules" {
   replication {
     automatic = true
   }
+  depends_on = [
+    google_project_service.secret_manager
+  ]
 }
 
 resource "google_secret_manager_secret" "oathkeeper_config" {
@@ -12,6 +15,9 @@ resource "google_secret_manager_secret" "oathkeeper_config" {
   replication {
     automatic = true
   }
+  depends_on = [
+    google_project_service.secret_manager
+  ]
 }
 
 resource "google_secret_manager_secret" "idtoken_jwks" {
@@ -20,4 +26,7 @@ resource "google_secret_manager_secret" "idtoken_jwks" {
   replication {
     automatic = true
   }
+  depends_on = [
+    google_project_service.secret_manager
+  ]
 }

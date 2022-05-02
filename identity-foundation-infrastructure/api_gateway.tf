@@ -6,6 +6,11 @@ resource "google_api_gateway_api" "apis" {
   project  = var.google_project
   provider = google-beta
   api_id   = "identity-foundation-apis"
+  depends_on = [
+    google_project_service.api_gateway,
+    google_project_service.service_control,
+    google_project_service.service_management
+  ]
 }
 
 resource "google_api_gateway_api_config" "apis" {

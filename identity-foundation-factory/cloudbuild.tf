@@ -49,6 +49,9 @@ resource "google_cloudbuild_trigger" "oathkeeper" {
       ]
     }
   }
+  depends_on = [
+    google_project_service.cloud_build
+  ]
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_account" {
@@ -78,6 +81,9 @@ resource "google_cloudbuild_trigger" "identity_foundation_account" {
       ]
     }
   }
+  depends_on = [
+    google_project_service.cloud_build
+  ]
 }
 
 resource "google_cloudbuild_trigger" "identity_foundation_app" {
@@ -107,4 +113,7 @@ resource "google_cloudbuild_trigger" "identity_foundation_app" {
       ]
     }
   }
+  depends_on = [
+    google_project_service.cloud_build
+  ]
 }

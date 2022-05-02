@@ -92,7 +92,8 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
   }
 
   depends_on = [
-    google_project_iam_member.runner_secret_manager_secret_accessor
+    google_project_iam_member.runner_secret_manager_secret_accessor,
+    google_project.run
   ]
 }
 
@@ -191,7 +192,8 @@ resource "google_cloud_run_service" "oathkeeper_api" {
   }
 
   depends_on = [
-    google_project_iam_member.runner_secret_manager_secret_accessor
+    google_project_iam_member.runner_secret_manager_secret_accessor,
+    google_project.run
   ]
 }
 
@@ -246,6 +248,10 @@ resource "google_cloud_run_service" "identity_foundation_account" {
       }
     }
   }
+
+  depends_on = [
+    google_project.run
+  ]
 }
 
 resource "google_cloud_run_service_iam_member" "identity_foundation_account_all_user_run_invoker" {
@@ -291,6 +297,10 @@ resource "google_cloud_run_service" "identity_foundation_app" {
       }
     }
   }
+
+  depends_on = [
+    google_project.run
+  ]
 }
 
 resource "google_cloud_run_service_iam_member" "identity_foundation_app_all_user_run_invoker" {

@@ -5,4 +5,7 @@ resource "google_artifact_registry_repository" "identity_foundation_container_re
   repository_id = "identity-foundation-run"
   description   = "Identity Foundation Run"
   format        = "DOCKER"
+  depends_on = [
+    google_project_service.artifact_registry
+  ]
 }
