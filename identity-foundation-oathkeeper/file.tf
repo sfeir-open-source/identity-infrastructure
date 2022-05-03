@@ -48,7 +48,7 @@ resource "local_file" "oathkeeper_access_rules" {
       }
       mutators = [
         {
-          handler = "id_token"
+          handler = "noop"
         }
       ]
       errors = [
@@ -80,6 +80,14 @@ resource "local_file" "oathkeeper_access_rules" {
       mutators = [
         {
           handler = "id_token"
+          config = {
+            claims = <<-EOF
+              {
+                "aud": "${var.identity_foundation_app_public_url}",
+                "session": {{ .Extra | toJson }}
+              }
+            EOF
+          }
         }
       ]
       errors = [
@@ -202,7 +210,7 @@ resource "local_file" "oathkeeper_config" {
           jwks_url   = var.id_token_jwks_url
           claims     = <<-EOF
             {
-              "aud": "${var.identity_foundation_app_public_url}",
+              "aud": "${var.oathkeeper_api_public_url}",
               "session": {{ .Extra | toJson }}
             }
           EOF
