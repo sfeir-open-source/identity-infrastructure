@@ -4,7 +4,7 @@ resource "local_file" "oathkeeper_access_rules" {
     {
       id = "ory:account"
       upstream = {
-        url = var.identity_foundation_account_public_url
+        url = var.identity_foundation_account_url
       }
       match = {
         url = "${var.oathkeeper_proxy_public_url}/<{auth,auth/**}>"
@@ -30,7 +30,7 @@ resource "local_file" "oathkeeper_access_rules" {
     {
       id = "ory:app"
       upstream = {
-        url = var.identity_foundation_app_public_url
+        url = var.identity_foundation_app_url
       }
       match = {
         url = "${var.oathkeeper_proxy_public_url}/<{app,app/home,app/favicon.ico,app/_next/static/**.css,app/_next/static/**.js,app/**.svg}>",
@@ -60,7 +60,7 @@ resource "local_file" "oathkeeper_access_rules" {
     {
       id = "ory:apis:app"
       upstream = {
-        url        = "${var.identity_foundation_apis_public_url}/app/api"
+        url        = "${var.identity_foundation_apis_url}/app/api"
         strip_path = "/apis/app"
       }
       match = {
@@ -83,7 +83,7 @@ resource "local_file" "oathkeeper_access_rules" {
           config = {
             claims = <<-EOF
               {
-                "aud": "${var.identity_foundation_app_public_url}",
+                "aud": "${var.identity_foundation_app_url}",
                 "session": {{ .Extra | toJson }}
               }
             EOF

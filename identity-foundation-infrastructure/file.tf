@@ -24,7 +24,7 @@ resource "local_file" "swagger" {
           summary     = "identity-foundation-apps"
           operationId = "identity-foundation-apps-${method}"
           x-google-backend = {
-            address          = var.identity_foundation_app_public_url
+            address          = local.identity_foundation_app_url
             path_translation = "APPEND_PATH_TO_ADDRESS"
           }
           responses = {
@@ -53,7 +53,7 @@ resource "local_file" "swagger" {
         type               = "oauth2"
         x-google-issuer    = var.oathkeeper_api_public_url
         x-google-jwks_uri  = "${var.oathkeeper_api_public_url}/.well-known/jwks.json"
-        x-google-audiences = var.identity_foundation_app_public_url
+        x-google-audiences = local.identity_foundation_app_url
         x-google-jwt-locations = [
           {
             header       = "Authorization"
