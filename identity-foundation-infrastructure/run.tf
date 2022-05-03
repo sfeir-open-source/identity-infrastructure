@@ -93,7 +93,7 @@ resource "google_cloud_run_service" "oathkeeper_proxy" {
 
   depends_on = [
     google_project_iam_member.runner_secret_manager_secret_accessor,
-    google_project.run
+    google_project_service.run
   ]
 }
 
@@ -193,7 +193,7 @@ resource "google_cloud_run_service" "oathkeeper_api" {
 
   depends_on = [
     google_project_iam_member.runner_secret_manager_secret_accessor,
-    google_project.run
+    google_project_service.run
   ]
 }
 
@@ -250,7 +250,7 @@ resource "google_cloud_run_service" "identity_foundation_account" {
   }
 
   depends_on = [
-    google_project.run
+    google_project_service.run
   ]
 }
 
@@ -299,7 +299,7 @@ resource "google_cloud_run_service" "identity_foundation_app" {
   }
 
   depends_on = [
-    google_project.run
+    google_project_service.run
   ]
 }
 
