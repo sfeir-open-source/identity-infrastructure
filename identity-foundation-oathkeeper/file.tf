@@ -2,7 +2,7 @@ resource "local_file" "oathkeeper_access_rules" {
   filename = "${path.module}/access-rules.json"
   content = jsonencode([
     {
-      id = "ory:account:anonymous"
+      id = "ory:account"
       upstream = {
         url = var.identity_foundation_account_public_url
       }
@@ -28,43 +28,12 @@ resource "local_file" "oathkeeper_access_rules" {
       ]
     },
     {
-      id = "ory:apis:protected"
-      upstream = {
-        url        = var.identity_foundation_apis_public_url
-        strip_path = "/apis"
-      }
-      match = {
-        url = "${var.oathkeeper_proxy_public_url}/apis/<**>"
-        methods = [
-          "GET"
-        ]
-      }
-      authenticators = [
-        {
-          handler = "cookie_session"
-        }
-      ]
-      authorizer = {
-        handler = "allow"
-      }
-      mutators = [
-        {
-          handler = "id_token"
-        }
-      ]
-      errors = [
-        {
-          handler = "json"
-        }
-      ]
-    },
-    {
-      id = "ory:app:protected"
+      id = "ory:app"
       upstream = {
         url = var.identity_foundation_app_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/<{app,app/**}>",
+        url = "${var.oathkeeper_proxy_public_url}/<{app,app/home,app/favicon.ico,app/_next/static/**.css,app/_next/static/**.js,app/**.svg}>",
         methods = [
           "GET"
         ]
@@ -85,6 +54,37 @@ resource "local_file" "oathkeeper_access_rules" {
       errors = [
         {
           handler = "redirect"
+        }
+      ]
+    },
+    {
+      id = "ory:apis:app"
+      upstream = {
+        url        = "${var.identity_foundation_apis_public_url}/app/api"
+        strip_path = "/apis/app"
+      }
+      match = {
+        url = "${var.oathkeeper_proxy_public_url}/apis/app/<**>"
+        methods = [
+          "GET"
+        ]
+      }
+      authenticators = [
+        {
+          handler = "cookie_session"
+        }
+      ]
+      authorizer = {
+        handler = "allow"
+      }
+      mutators = [
+        {
+          handler = "id_token"
+        }
+      ]
+      errors = [
+        {
+          handler = "json"
         }
       ]
     }
