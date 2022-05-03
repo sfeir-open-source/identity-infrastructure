@@ -175,6 +175,7 @@ resource "local_file" "oathkeeper_config" {
         config = {
           check_session_url = "${var.identity_foundation_account_public_url}/auth/whoami.php"
           extra_from        = "@this"
+          preserve_path     = true
           subject_from      = "identity.id"
           only = [
             "PHPSESSID"
