@@ -54,7 +54,7 @@ resource "local_file" "oathkeeper_access_rules" {
       ]
       errors = [
         {
-          handler = "redirect"
+          handler = "json"
         }
       ]
     },
