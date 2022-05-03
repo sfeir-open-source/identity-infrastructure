@@ -3,8 +3,8 @@ resource "local_sensitive_file" "jwks" {
   content  = jsonencode(jsondecode(data.google_kms_secret.jwks_keys.plaintext))
 }
 
-resource "local_file" "swagger" {
-  filename = "swagger.json"
+resource "local_file" "api_swagger" {
+  filename = "api.swagger.json"
   content = jsonencode({
     swagger = "2.0"
     info = {
