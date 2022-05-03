@@ -173,7 +173,7 @@ resource "local_file" "oathkeeper_config" {
       cookie_session = {
         enabled = true
         config = {
-          check_session_url = "${var.identity_foundation_account_public_url}/auth/whoami.php"
+          check_session_url = "${var.oathkeeper_proxy_public_url}/auth/whoami.php"
           extra_from        = "@this"
           preserve_path     = true
           subject_from      = "identity.id"
