@@ -38,4 +38,7 @@ resource "google_project_service" "run" {
   service                    = "run.googleapis.com"
   disable_dependent_services = false
   disable_on_destroy         = true
+  depends_on = [
+    google_project_service.logging
+  ]
 }
