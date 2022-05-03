@@ -22,10 +22,10 @@ variable "identity_foundation_app_url" {
   default     = "http://identity-foundation-app:3000"
 }
 
-variable "identity_foundation_apis_url" {
+variable "identity_foundation_api_url" {
   type        = string
   description = "The public URL of the API Gateway service"
-  default     = "http://identity-foundation-app:3000"
+  default     = "http://identity-foundation-app:3000/app/api"
 }
 
 variable "id_token_jwks_url" {

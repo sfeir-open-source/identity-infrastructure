@@ -58,13 +58,13 @@ resource "local_file" "oathkeeper_access_rules" {
       ]
     },
     {
-      id = "ory:apis:app"
+      id = "ory:api"
       upstream = {
-        url        = "${var.identity_foundation_apis_url}/app/api"
-        strip_path = "/apis/app"
+        url        = var.identity_foundation_api_url
+        strip_path = "/api"
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/apis/app/<**>"
+        url = "${var.oathkeeper_proxy_public_url}/api/<**>"
         methods = [
           "GET"
         ]

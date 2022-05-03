@@ -29,6 +29,9 @@ resource "google_api_gateway_api_config" "apis" {
       google_service_account = google_service_account.apis.email
     }
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_api_gateway_gateway" "apis" {
