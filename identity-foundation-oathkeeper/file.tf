@@ -7,7 +7,7 @@ resource "local_file" "oathkeeper_access_rules" {
         url = var.identity_foundation_account_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/auth/<**>"
+        url = "${var.oathkeeper_proxy_public_url}/<{auth,auth/**}>"
         methods = [
           "GET",
           "POST"
@@ -64,7 +64,7 @@ resource "local_file" "oathkeeper_access_rules" {
         url = var.identity_foundation_app_public_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/<**>",
+        url = "${var.oathkeeper_proxy_public_url}/<{app,app/**}>",
         methods = [
           "GET"
         ]
