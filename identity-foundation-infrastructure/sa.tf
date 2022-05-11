@@ -4,8 +4,8 @@ resource "google_service_account" "runner" {
   display_name = "Run Service Account"
 }
 
-resource "google_service_account" "api" {
+resource "google_service_account" "apis" {
   project      = var.google_project
-  account_id   = "identity-foundation-api"
+  account_id   = "identity-foundation-apis"
   display_name = "API Gateway Service Account"
 }

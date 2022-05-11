@@ -22,12 +22,6 @@ variable "identity_foundation_app_url" {
   default     = "http://identity-foundation-app:3000"
 }
 
-variable "identity_foundation_api_url" {
-  type        = string
-  description = "The public URL of the API Gateway service"
-  default     = "http://identity-foundation-app:3000/app/api"
-}
-
 variable "id_token_jwks_url" {
   type        = string
   description = "The JSON Web Key which is used to validate the signature of a signed JWT"

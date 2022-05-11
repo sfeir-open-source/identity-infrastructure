@@ -23,7 +23,17 @@ resource "local_file" "oathkeeper_access_rules" {
       }
       mutators = [
         {
-          handler = "noop"
+          handler = "id_token"
+          config = {
+            issuer_url = var.oathkeeper_api_public_url
+            jwks_url   = var.id_token_jwks_url
+            claims     = <<-EOF
+              {
+                "aud": "${var.identity_foundation_account_url}",
+                "session": {{ .Extra | toJson }}
+              }
+            EOF
+          }
         }
       ]
     },
@@ -33,38 +43,7 @@ resource "local_file" "oathkeeper_access_rules" {
         url = var.identity_foundation_app_url
       }
       match = {
-        url = "${var.oathkeeper_proxy_public_url}/<{app,app/home,app/favicon.ico,app/_next/static/**.css,app/_next/static/**.js,app/**.svg}>",
-        methods = [
-          "GET"
-        ]
-      }
-      authenticators = [
-        {
-          handler = "cookie_session"
-        }
-      ]
-      authorizer = {
-        handler = "allow"
-      }
-      mutators = [
-        {
-          handler = "noop"
-        }
-      ]
-      errors = [
-        {
-          handler = "redirect"
-        }
-      ]
-    },
-    {
-      id = "ory:api"
-      upstream = {
-        url        = var.identity_foundation_api_url
-        strip_path = "/api"
-      }
-      match = {
-        url = "${var.oathkeeper_proxy_public_url}/api/<**>"
+        url = "${var.oathkeeper_proxy_public_url}/<{app,app/**}>",
         methods = [
           "GET"
         ]
@@ -81,7 +60,9 @@ resource "local_file" "oathkeeper_access_rules" {
         {
           handler = "id_token"
           config = {
-            claims = <<-EOF
+            issuer_url = var.oathkeeper_api_public_url
+            jwks_url   = var.id_token_jwks_url
+            claims     = <<-EOF
               {
                 "aud": "${var.identity_foundation_app_url}",
                 "session": {{ .Extra | toJson }}
@@ -92,7 +73,7 @@ resource "local_file" "oathkeeper_access_rules" {
       ]
       errors = [
         {
-          handler = "json"
+          handler = "redirect"
         }
       ]
     }

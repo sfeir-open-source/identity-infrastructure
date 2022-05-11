@@ -35,4 +35,5 @@ terraform.rc
 
 # Generated local files
 id_token.jwks.json
-swagger.json
+app.swagger.json
+account.swagger.json

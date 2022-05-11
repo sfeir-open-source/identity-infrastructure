@@ -1,5 +1,5 @@
 locals {
-  identity_foundation_account_url = google_cloud_run_service.identity_foundation_account.status[0].url
-  identity_foundation_app_url     = google_cloud_run_service.identity_foundation_app.status[0].url
-  identity_foundation_api_url     = "https://${google_api_gateway_gateway.api.default_hostname}"
+  identity_foundation_account_run_url = google_cloud_run_service.identity_foundation_account.status[0].url
+  identity_foundation_app_run_url     = google_cloud_run_service.identity_foundation_app.status[0].url
+  oathkeeper_api_run_url              = google_cloud_run_service.oathkeeper_api.status[0].url
 }

@@ -254,12 +254,12 @@ resource "google_cloud_run_service" "identity_foundation_account" {
   ]
 }
 
-resource "google_cloud_run_service_iam_member" "identity_foundation_account_all_user_run_invoker" {
+resource "google_cloud_run_service_iam_member" "identity_foundation_account_apis_run_invoker" {
   project  = var.google_project
   service  = google_cloud_run_service.identity_foundation_account.name
   location = google_cloud_run_service.identity_foundation_account.location
   role     = "roles/run.invoker"
-  member   = "allUsers"
+  member   = "serviceAccount:${google_service_account.apis.email}"
 }
 
 resource "google_cloud_run_service" "identity_foundation_app" {
@@ -303,10 +303,10 @@ resource "google_cloud_run_service" "identity_foundation_app" {
   ]
 }
 
-resource "google_cloud_run_service_iam_member" "identity_foundation_app_all_user_run_invoker" {
+resource "google_cloud_run_service_iam_member" "identity_foundation_app_apis_run_invoker" {
   project  = var.google_project
   service  = google_cloud_run_service.identity_foundation_app.name
   location = google_cloud_run_service.identity_foundation_app.location
   role     = "roles/run.invoker"
-  member   = "allUsers"
+  member   = "serviceAccount:${google_service_account.apis.email}"
 }
