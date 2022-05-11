@@ -4,7 +4,7 @@ resource "local_sensitive_file" "jwks" {
 }
 
 resource "local_file" "api_swagger" {
-  filename = "api.swagger.json"
+  filename = "${path.module}/api.swagger.json"
   content = jsonencode({
     swagger = "2.0"
     info = {
