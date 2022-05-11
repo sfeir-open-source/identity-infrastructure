@@ -4,7 +4,7 @@ resource "local_file" "oathkeeper_access_rules" {
     {
       id = "ory:account"
       upstream = {
-        url = var.identity_foundation_account_url
+        url = var.identity_foundation_account_public_url
       }
       match = {
         url = "${var.oathkeeper_proxy_public_url}/<{auth,auth/**}>"
@@ -40,7 +40,7 @@ resource "local_file" "oathkeeper_access_rules" {
     {
       id = "ory:app"
       upstream = {
-        url = var.identity_foundation_app_url
+        url = var.identity_foundation_app_public_url
       }
       match = {
         url = "${var.oathkeeper_proxy_public_url}/<{app,app/**}>",

@@ -1,8 +1,3 @@
-resource "local_sensitive_file" "jwks" {
-  filename = "${path.module}/id_token.jwks.json"
-  content  = jsonencode(jsondecode(data.google_kms_secret.jwks_keys.plaintext))
-}
-
 resource "local_file" "app_swagger" {
   filename = "${path.module}/app.swagger.json"
   content = jsonencode({
@@ -51,8 +46,8 @@ resource "local_file" "app_swagger" {
         authorizationUrl  = ""
         flow              = "implicit"
         type              = "oauth2"
-        x-google-issuer   = var.oathkeeper_api_public_url
-        x-google-jwks_uri = "${var.oathkeeper_api_public_url}/.well-known/jwks.json"
+        x-google-issuer   = var.oauth2_issuer
+        x-google-jwks_uri = var.oauth2_jwks_uri
         x-google-jwt-locations = [
           {
             header       = "Authorization"
@@ -80,7 +75,7 @@ resource "local_file" "account_swagger" {
     ]
     paths = {
       "/{subpath=**}" = {
-        for method in ["get"] :
+        for method in ["get", "post"] :
         method => {
           summary     = "identity-foundation-account"
           operationId = "identity-foundation-account-${method}"
@@ -112,8 +107,8 @@ resource "local_file" "account_swagger" {
         authorizationUrl  = ""
         flow              = "implicit"
         type              = "oauth2"
-        x-google-issuer   = var.oathkeeper_api_public_url
-        x-google-jwks_uri = "${var.oathkeeper_api_public_url}/.well-known/jwks.json"
+        x-google-issuer   = var.oauth2_issuer
+        x-google-jwks_uri = var.oauth2_jwks_uri
         x-google-jwt-locations = [
           {
             header       = "Authorization"

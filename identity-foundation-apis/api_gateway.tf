@@ -4,14 +4,10 @@ locals {
 }
 
 resource "google_api_gateway_api" "app" {
-  project  = var.google_project
-  provider = google-beta
-  api_id   = "identity-foundation-app"
-  depends_on = [
-    google_project_service.api_gateway,
-    google_project_service.service_control,
-    google_project_service.service_management
-  ]
+  project      = var.google_project
+  provider     = google-beta
+  display_name = "Identity Foundation App"
+  api_id       = "identity-foundation-app"
 }
 
 resource "google_api_gateway_api_config" "app" {
@@ -44,14 +40,10 @@ resource "google_api_gateway_gateway" "app" {
 }
 
 resource "google_api_gateway_api" "account" {
-  project  = var.google_project
-  provider = google-beta
-  api_id   = "identity-foundation-account"
-  depends_on = [
-    google_project_service.api_gateway,
-    google_project_service.service_control,
-    google_project_service.service_management
-  ]
+  project      = var.google_project
+  provider     = google-beta
+  display_name = "Identity Foundation Account"
+  api_id       = "identity-foundation-account"
 }
 
 resource "google_api_gateway_api_config" "account" {

@@ -13,8 +13,3 @@ data "google_kms_secret" "jwks_keys" {
   crypto_key = data.google_kms_crypto_key.sensitive.id
   ciphertext = var.ciphertext_jwks_keys
 }
-
-data "google_kms_secret" "identity_foundation_account_credentials" {
-  crypto_key = data.google_kms_crypto_key.sensitive.id
-  ciphertext = var.ciphertext_identity_foundation_account_credentials
-}
