@@ -1,5 +1,5 @@
 module "sandbox_infrastructure" {
-  source                                             = "../../../identity-foundation-infrastructure"
+  source                                             = "../../identity-foundation-infrastructure"
   google_project                                     = "machinelearningsandbox-265814"
   google_region                                      = "europe-west1"
   oathkeeper_container_image_name                    = "europe-west1-docker.pkg.dev/machinelearningsandbox-265814/identity-foundation-run/oathkeeper@sha256:4c106d689739fde76acae1bc4aeb4ba1ae9621c21746ee4ea45669ce17740b6d"
